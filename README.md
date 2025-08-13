@@ -1,1 +1,1 @@
-Solana data analysis for new token launches
+crypto data analysis 
