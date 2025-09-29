@@ -82,7 +82,7 @@ for category in categories:
             tokens = res.json()
             all_tokens.extend(tokens)
         except Exception as e:
-            print(f"⚠️ Failed to fetch {category} for {interval}: {e}")
+            print(f"Failed to fetch {category} for {interval}: {e}")
 
 # --- Deduplicate by token ID ---
 unique_tokens = {token["id"]: token for token in all_tokens}.values()
