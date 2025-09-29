@@ -112,17 +112,17 @@ recent_24h_all_tokens = [
 if recent_24h_all_tokens:
     total_all = sum(float(token["mcap"]) for token in recent_24h_all_tokens)
     avg_mcap_all_24h = total_all / len(recent_24h_all_tokens)
-    print(f"📊 Average Market Cap of ALL tokens created in last 24 hours: {int(avg_mcap_all_24h):,}")
+    print(f"Average Market Cap of ALL tokens created in last 24 hours: {int(avg_mcap_all_24h):,}")
 else:
-    print("📊 No tokens found created in last 24 hours (ALL tokens).")
+    print("No tokens found created in last 24 hours (ALL tokens).")
 
 # --- Average market cap of FILTERED tokens ---
 if filtered_tokens:
     total_filtered = sum(float(token["mcap"]) for token in filtered_tokens)
     avg_mcap_filtered = total_filtered / len(filtered_tokens)
-    print(f"📊 Average Market Cap of ALL tokens matching your filters: {int(avg_mcap_filtered):,}\n")
+    print(f"Average Market Cap of ALL tokens matching your filters: {int(avg_mcap_filtered):,}\n")
 else:
-    print("📊 No tokens found matching your filters.\n")
+    print("No tokens found matching your filters.\n")
 
 # --- Top 5 by Market Cap (created in last 24h) ---
 recent_tokens_24h = [
@@ -135,7 +135,7 @@ top_5_recent = recent_tokens_24h[:5]
 
 border_line = "=" * 70
 print(f"\n{border_line}")
-print(f"📊 Top 5 Tokens Created in Last 24 Hours by Market Cap")
+print(f"Top 5 Tokens Created in Last 24 Hours by Market Cap")
 print(f"{border_line}\n")
 
 for idx, token in enumerate(top_5_recent, 1):
@@ -182,7 +182,7 @@ volume_tokens.sort(key=lambda x: x["total_volume"], reverse=True)
 top_5_volume = volume_tokens[:5]
 
 print(f"\n{border_line}")
-print(f"📊 Top 5 Tokens Created in Last 24 Hours by Volume")
+print(f"Top 5 Tokens Created in Last 24 Hours by Volume")
 print(f"{border_line}\n")
 
 for idx, token in enumerate(top_5_volume, 1):
@@ -215,7 +215,7 @@ for idx, token in enumerate(top_5_volume, 1):
 print(border_line)
 
 # --- Filtered Tokens Output ---
-print(f"📊 {len(filtered_tokens)} Tokens Matching Market Cap Filter ({min_mcap:,} - {max_mcap:,}), Sorted by Market Cap (Ascending):\n")
+print(f"{len(filtered_tokens)} Tokens Matching Market Cap Filter ({min_mcap:,} - {max_mcap:,}), Sorted by Market Cap (Ascending):\n")
 
 for idx, token in enumerate(filtered_tokens, 1):
     name = token.get("name", "N/A")
