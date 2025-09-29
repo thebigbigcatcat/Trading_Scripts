@@ -2,7 +2,7 @@ import requests
 import time
 import threading
 
-# --- Optional alert sound (Windows only) ---
+# alert sound
 try:
     import winsound
     SOUND_ENABLED = True
@@ -32,7 +32,7 @@ while True:
             "hit": False
         })
     except:
-        print("⚠️ Invalid format. Use: <contract_address>, <target_price>")
+        print("Invalid format. Use: <contract_address>, <target_price>")
 
 # --- Price Fetching ---
 def get_token_price_usd(chain, address):
@@ -60,7 +60,7 @@ def beep_until_ok():
     thread.start()
 
     while True:
-        user_input = input("🛑 Type 'ok' to stop the alarm and continue: ").strip().lower()
+        user_input = input("Type 'ok' to stop the alarm and continue: ").strip().lower()
         if user_input == "ok":
             stop_beep_event.set()
             thread.join()
@@ -69,7 +69,7 @@ def beep_until_ok():
 # --- Add new token after hit ---
 def add_new_token():
     while True:
-        line = input("\n➕ Enter new token and target (or leave blank to skip): ").strip()
+        line = input("\n Enter new token and target (or leave blank to skip): ").strip()
         if not line:
             break
         try:
@@ -81,13 +81,13 @@ def add_new_token():
             })
             break
         except:
-            print("⚠️ Invalid format. Use: <contract_address>, <target_price>")
+            print("Invalid format. Use: <contract_address>, <target_price>")
 
 # --- Beep control ---
 stop_beep_event = threading.Event()
 
 # --- Main Loop ---
-print(f"\n🔍 Tracking {len(tokens)} tokens on {chain}...")
+print(f"\nTracking {len(tokens)} tokens on {chain}...")
 
 while True:
     for token in tokens:
@@ -98,7 +98,7 @@ while True:
         if price is not None:
             print(f"[{time.strftime('%H:%M:%S')}] {token['address'][:6]}... → ${price:.6f}")
             if price >= token["target"]:
-                print(f"\n🚨 ALERT: {token['address'][:6]}... reached ${price:.6f} (target: ${token['target']})")
+                print(f"\nALERT: {token['address'][:6]}... reached ${price:.6f} (target: ${token['target']})")
 
                 token["hit"] = True
                 beep_until_ok()  # Start beep loop until "ok"
