@@ -1,15 +1,15 @@
 import requests
 from datetime import datetime, timezone, timedelta
 
-# --- Time intervals and categories ---
+# define interval/cat
 intervals = ["5m", "1h", "6h", "24h"]
 categories = ["toporganicscore", "toptraded", "toptrending"]
 
-# --- User input for market cap filtering ---
+# input for market cap filtering
 min_mcap = int(input("Enter minimum market cap : "))
 max_mcap = int(input("Enter maximum market cap : "))
 
-# --- Helper to get creation date ---
+# Get creation date
 def get_created_at(token):
     ts = token.get("firstPool", {}).get("createdAt")
     if ts:
@@ -19,7 +19,7 @@ def get_created_at(token):
             return None
     return None
 
-# --- Helper to get relative time ago ---
+# relative time ago 
 def time_ago(dt):
     if not dt:
         return "N/A"
@@ -38,7 +38,7 @@ def time_ago(dt):
     days = hours // 24
     return f"{days} days ago"
 
-# --- Helper to check DexScreener payment status ---
+# DexScreener
 def check_dex_paid_status(token_address, chain="solana"):
     try:
         url = f"https://api.dexscreener.com/orders/v1/{chain}/{token_address}"
@@ -70,7 +70,7 @@ def check_dex_paid_status(token_address, chain="solana"):
     except Exception:
         return "error"
 
-# --- Fetch all tokens across categories and timeframes ---
+# get all tokens from interval/cat
 all_tokens = []
 
 for category in categories:
@@ -84,10 +84,10 @@ for category in categories:
         except Exception as e:
             print(f"Failed to fetch {category} for {interval}: {e}")
 
-# --- Deduplicate by token ID ---
+# deduplicate by token ID 
 unique_tokens = {token["id"]: token for token in all_tokens}.values()
 
-# --- Filter by market cap ---
+# filter by market cap
 filtered_tokens = []
 for token in unique_tokens:
     mcap = token.get("mcap")
@@ -103,7 +103,7 @@ filtered_tokens.sort(key=lambda t: float(t.get("mcap", 0) or 0))
 now = datetime.now(timezone.utc)
 cutoff_24h = now - timedelta(hours=24)
 
-# --- Average market cap of ALL tokens created in last 24h ---
+# Avg market cap of all tokens created in last 24h
 recent_24h_all_tokens = [
     token for token in unique_tokens
     if (created := get_created_at(token)) and created >= cutoff_24h and token.get("mcap")
@@ -116,7 +116,7 @@ if recent_24h_all_tokens:
 else:
     print("No tokens found created in last 24 hours (ALL tokens).")
 
-# --- Average market cap of FILTERED tokens ---
+# Avg market cap of filtered tokens
 if filtered_tokens:
     total_filtered = sum(float(token["mcap"]) for token in filtered_tokens)
     avg_mcap_filtered = total_filtered / len(filtered_tokens)
@@ -124,7 +124,7 @@ if filtered_tokens:
 else:
     print("No tokens found matching your filters.\n")
 
-# --- Top 5 by Market Cap (created in last 24h) ---
+# Top 5 by Mcap created in last 24h
 recent_tokens_24h = [
     token for token in unique_tokens
     if (created := get_created_at(token)) and created >= cutoff_24h and token.get("mcap")
@@ -165,7 +165,7 @@ for idx, token in enumerate(top_5_recent, 1):
 
 print(border_line)
 
-# --- NEW: Top 5 tokens by 24h Volume (created in last 24h) ---
+# Top 5 tokens by 24h Volume (created in last 24h) 
 volume_tokens = []
 for token in unique_tokens:
     created_at = get_created_at(token)
@@ -214,7 +214,7 @@ for idx, token in enumerate(top_5_volume, 1):
 
 print(border_line)
 
-# --- Filtered Tokens Output ---
+# Filtered Output
 print(f"{len(filtered_tokens)} Tokens Matching Market Cap Filter ({min_mcap:,} - {max_mcap:,}), Sorted by Market Cap (Ascending):\n")
 
 for idx, token in enumerate(filtered_tokens, 1):
