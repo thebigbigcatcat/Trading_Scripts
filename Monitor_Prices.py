@@ -9,11 +9,10 @@ try:
 except ImportError:
     SOUND_ENABLED = False
 
-# --- Config ---
-poll_interval = 10  # seconds between checks
+# user input
+poll_interval = 10  # seconds between checks (user input?)
 chain = input("Enter chain (e.g., solana, ethereum): ").strip().lower()
 
-# --- Token Input ---
 tokens = []
 
 print("\nEnter token contract addresses and target prices (one per line):")
@@ -34,7 +33,7 @@ while True:
     except:
         print("Invalid format. Use: <contract_address>, <target_price>")
 
-# --- Price Fetching ---
+# fetch price
 def get_token_price_usd(chain, address):
     url = f"https://api.geckoterminal.com/api/v2/networks/{chain}/tokens/{address}"
     try:
@@ -47,7 +46,7 @@ def get_token_price_usd(chain, address):
         print(f"Error fetching price for {address[:6]}...: {e}")
         return None
 
-# --- Looping Beep Thread ---
+# loop Beep Thread 
 def beep_until_ok():
     def beep_loop():
         while not stop_beep_event.is_set():
@@ -66,7 +65,7 @@ def beep_until_ok():
             thread.join()
             break
 
-# --- Add new token after hit ---
+# add new token 
 def add_new_token():
     while True:
         line = input("\n Enter new token and target (or leave blank to skip): ").strip()
@@ -83,10 +82,10 @@ def add_new_token():
         except:
             print("Invalid format. Use: <contract_address>, <target_price>")
 
-# --- Beep control ---
+# beep control 
 stop_beep_event = threading.Event()
 
-# --- Main Loop ---
+# Main Loop
 print(f"\nTracking {len(tokens)} tokens on {chain}...")
 
 while True:
